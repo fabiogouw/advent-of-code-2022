@@ -5,8 +5,13 @@
             [aoc2022.day01.adapters.calories-text :as adapter]))
 
 (deftest challenge
-  (testing "How many total Calories is that Elf carrying?"
+  (testing "Part 1- How many total Calories is that Elf carrying?"
     (let [input (slurp (io/resource "input-day01.txt"))]
       (is (= (->> input
                   (adapter/text->map)
-                  (logic/most-calories)) 70509)))))
+                  (logic/most-calories)) 70509))))
+  (testing "Part 2- How many Calories are those Elves carrying in total?"
+    (let [input (slurp (io/resource "input-day01.txt"))]
+      (is (= (->> input
+                  (adapter/text->map)
+                  (logic/top-3-most-calories)) 208567))))  )
