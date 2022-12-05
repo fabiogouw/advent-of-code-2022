@@ -14,4 +14,4 @@
     (let [input (slurp (io/resource "input-day01.txt"))]
       (is (= (->> input
                   (adapter/text->map)
-                  (logic/top-3-most-calories)) 208567))))  )
+                  (logic/top-3-most-calories)) 208567)))))
