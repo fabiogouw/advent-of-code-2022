@@ -21,8 +21,23 @@
   [line]
   {:opponent  (opponent-move line)
    :you       (your-move line)})
-(defn text->map
+(defn text->map-move
   [input-text]
   (let [lines (str/split-lines input-text)]
     (->> lines
-         (map move-list))))
+         (map (fn [line] {:opponent  (opponent-move line)
+                          :you       (your-move line)})))))
+
+(defn- your-result
+  [line]
+  (let [move (get line 2)]
+    (case move
+      \X :lose
+      \Y :draw
+      \Z :win)))
+(defn text->map-result
+  [input-text]
+  (let [lines (str/split-lines input-text)]
+    (->> lines
+         (map (fn [line] {:opponent  (opponent-move line)
+                          :you       (your-result line)})))))
