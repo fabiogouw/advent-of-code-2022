@@ -14,4 +14,4 @@
     (let [input (slurp (io/resource "input-day02.txt"))]
       (is (= (->> input
                   (adapter/text->map-result)
-                  (logic/result-summed)) 10116))))  )
+                  (logic/result-summed)) 10116)))))
