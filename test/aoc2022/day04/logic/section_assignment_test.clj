@@ -22,3 +22,15 @@
     (is (= (logic/fully-overlaps? {:first-elf {:start 2 :end 4} :second-elf {:start 3 :end 5}}) false)))
   (testing "contains only the end"
     (is (= (logic/fully-overlaps? {:first-elf {:start 2 :end 4} :second-elf {:start 1 :end 3}}) false))))
+
+(deftest overlaps?
+  (testing "no overlap"
+    (is (= (logic/overlaps? {:first-elf {:start 2 :end 4} :second-elf {:start 5 :end 8}}) false)))
+  (testing "fully contains"
+    (is (= (logic/overlaps? {:first-elf {:start 2 :end 8} :second-elf {:start 4 :end 6}}) true)))
+  (testing "same range overlaps"
+    (is (= (logic/overlaps? {:first-elf {:start 2 :end 8} :second-elf {:start 2 :end 8}}) true)))
+  (testing "contains only the start"
+    (is (= (logic/overlaps? {:first-elf {:start 2 :end 4} :second-elf {:start 3 :end 5}}) true)))
+  (testing "contains only the end"
+    (is (= (logic/overlaps? {:first-elf {:start 2 :end 4} :second-elf {:start 1 :end 3}}) true))))
