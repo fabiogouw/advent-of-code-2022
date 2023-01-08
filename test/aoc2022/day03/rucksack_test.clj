@@ -5,8 +5,13 @@
             [aoc2022.day03.logic.rucksack :as logic]))
 
 (deftest challenge
-  (testing "Part 2 - What is the sum of the priorities of those item types?"
+  (testing "Part 1 - Sums the priorities of the repeated items in the compartments of each rucksack"
     (let [input (slurp (io/resource "input-day03.txt"))]
       (is (= (->> input
                   (adapter/input->rucksacks)
-                  (logic/sum-repeated-priority)) 7872)))))
+                  (logic/sum-repeated-priority)) 7872))))
+  (testing "Part 2 - Sums the priorities of the badges for each group (the repeated item that appears in the groups of three rucksacks"
+    (let [input (slurp (io/resource "input-day03.txt"))]
+      (is (= (->> input
+                  (adapter/input->rucksacks)
+                  (logic/badges-summed)) 2497)))))
