@@ -1,4 +1,4 @@
-(ns aoc2022.day04.adapter.section-assignment
+(ns aoc2022.day04.adapter.section-assignment-text
   (:require [clojure.string :as string]))
 
 (defn- part->start-end [part]

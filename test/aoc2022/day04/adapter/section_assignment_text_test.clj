@@ -1,6 +1,6 @@
-(ns aoc2022.day04.adapter.section-assignment_test
+(ns aoc2022.day04.adapter.section-assignment-text_test
   (:require [clojure.test :refer :all]
-            [aoc2022.day04.adapter.section-assignment :as adapter]))
+            [aoc2022.day04.adapter.section-assignment-text :as adapter]))
 
 (def input-file "2-4,6-8
 2-3,4-5")

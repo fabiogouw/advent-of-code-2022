@@ -1,7 +1,7 @@
 (ns aoc2022.day04.section-assignment-test
   (:require [clojure.java.io :as io]
             [clojure.test :refer :all]
-            [aoc2022.day04.adapter.section-assignment :as adapter]
+            [aoc2022.day04.adapter.section-assignment-text :as adapter]
             [aoc2022.day04.logic.section-assignment :as logic]))
 
 (deftest challenge
