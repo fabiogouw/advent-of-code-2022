@@ -9,4 +9,9 @@
     (let [input (slurp (io/resource "input-day05.txt"))]
       (is (= (->> input
                   (adapter/text->stacks)
-                  (logic/final-stack)) "SPFMVDTZT")))))
+                  (logic/final-stack-9000)) "SPFMVDTZT"))))
+  (testing "Part 2 - After the rearrangement procedure completes wuth CrateMover 9001, what crate ends up on top of each stack?"
+    (let [input (slurp (io/resource "input-day05.txt"))]
+      (is (= (->> input
+                  (adapter/text->stacks)
+                  (logic/final-stack-9001)) "ZFSJBPRFP")))))
