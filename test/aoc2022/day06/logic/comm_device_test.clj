@@ -17,4 +17,15 @@
     (testing "empty example"
       (is (= (logic/start-of-packet "") -1)))
     (testing "no start example"
-      (is (= (logic/start-of-packet "xxxx") -1)))))
+      (is (= (logic/start-of-packet "xxxx") -1))))
+  (testing "finding the start of the message in datastream"
+    (testing "example 1"
+      (is (= (logic/start-of-message "mjqjpqmgbljsphdztnvjfqwrcgsmlb") 19)))
+    (testing "example 2"
+      (is (= (logic/start-of-message "bvwbjplbgvbhsrlpgdmjqwftvncz") 23)))
+    (testing "example 3"
+      (is (= (logic/start-of-message "nppdvjthqldpwncqszvftbrmjlhg") 23)))
+    (testing "example 4"
+      (is (= (logic/start-of-message "nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg") 29)))    
+    (testing "example 5"
+      (is (= (logic/start-of-message "zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw") 26)))))
