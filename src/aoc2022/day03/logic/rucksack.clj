@@ -22,15 +22,16 @@
     (reduce + repeated-items)))
 
 (defn badges-summed
-  ([rucksacks]
-   (badges-summed rucksacks 0))
-  ([rucksacks total-accumulated]
-    (let [this-group-rucksacks            (take 3 rucksacks)
-          others-rucksacks                (nthrest rucksacks 3)
-          compartment-combined-rucksacks  (map #(concat (:first-compartment %) (:second-compartment %)) this-group-rucksacks)
-          repeated-items                  (distinct (reduce repeated compartment-combined-rucksacks))
-          badge-value                     (priority (first repeated-items))
-          total-accumulated               (+ total-accumulated badge-value)]
-      (if (empty? others-rucksacks)
-        total-accumulated
-        (recur others-rucksacks total-accumulated)))))
+  [rucksacks]
+  (let [rucksacks (partition 3 rucksacks)]
+    (loop [rucksacks          rucksacks
+           total-accumulated  0]
+      (let [this-group-rucksacks            (first rucksacks)
+            others-rucksacks                (rest rucksacks)
+            compartment-combined-rucksacks  (map #(concat (:first-compartment %) (:second-compartment %)) this-group-rucksacks)
+            repeated-items                  (distinct (reduce repeated compartment-combined-rucksacks))
+            badge-value                     (priority (first repeated-items))
+            total-accumulated               (+ total-accumulated badge-value)]
+        (if (empty? others-rucksacks)
+          total-accumulated
+          (recur others-rucksacks total-accumulated))))))
