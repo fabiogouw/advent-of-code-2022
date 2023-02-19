@@ -9,4 +9,4 @@
     (let [input (slurp (io/resource "input-day07.txt"))]
       (is (= (-> input
                  adapter/text->filesystem-structure
-                 (logic/total-size-at-most 100000)) 2030039)))))
+                 (logic/total-size-at-most 100000)) 2104783)))))

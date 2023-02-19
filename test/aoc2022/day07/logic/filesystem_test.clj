@@ -14,7 +14,7 @@
                                                   {:name "k"     :size 7214296}]}]})
 (deftest total-size
   (testing "get the total size of a filesystem"
-    (is (= (logic/total-size sample) 48381165))))
+    (is (= (logic/total-size-filesystem sample) 48381165))))
 
 (deftest total-size-at-most
   (testing "get the total size of a filesystem"
