@@ -17,5 +17,9 @@
     (is (= (logic/total-size-filesystem sample) 48381165))))
 
 (deftest total-size-at-most
-  (testing "get the total size of a filesystem"
+  (testing "get the total size of a filesystem with directories that do not pass 100000 in size"
     (is (= (logic/total-size-at-most sample 100000) 95437))))
+
+(deftest smallest-directory-size-enough-for-update
+  (testing "get the total size of a filesystem with directories that do not pass 100000 in size"
+    (is (= (logic/smallest-directory-size-enough-for-update sample 70000000 30000000) 24933642))))

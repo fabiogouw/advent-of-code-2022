@@ -9,4 +9,9 @@
     (let [input (slurp (io/resource "input-day07.txt"))]
       (is (= (-> input
                  adapter/text->filesystem-structure
-                 (logic/total-size-at-most 100000)) 2104783)))))
+                 (logic/total-size-at-most 100000)) 2104783))))
+  (testing "Part 2 - What is the total size of the smallest directory we need to delete to have enough available space for update?"
+    (let [input (slurp (io/resource "input-day07.txt"))]
+      (is (= (-> input
+                 adapter/text->filesystem-structure
+                 (logic/smallest-directory-size-enough-for-update 70000000 30000000)) 5883165)))))
