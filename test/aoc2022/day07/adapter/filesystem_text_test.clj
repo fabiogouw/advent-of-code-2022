@@ -26,7 +26,7 @@ $ ls
 5626152 d.ext
 7214296 k")
 
-(deftest filesystem-structure
+(deftest conversion-in
   (testing "mounting file system structure"
     (is (= (adapter/text->filesystem-structure input) {:name "/" :items [{:name "a" :items [ {:name "e"      :items [{:name "i" :size 584}]}
                                                                                              {:name "f"      :size 29116}
