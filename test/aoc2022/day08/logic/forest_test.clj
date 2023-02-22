@@ -10,3 +10,7 @@
 (deftest all-visible-trees
   (testing "gets all the visible trees from the matrix"
     (is (= (logic/all-visible-trees sample) 21))))
+
+(deftest best-scenic-score
+  (testing "gets the best scenic score"
+    (is (= (logic/best-scenic-score sample) 8))))

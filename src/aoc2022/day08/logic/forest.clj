@@ -33,11 +33,11 @@
   )
 
 (defn- surrounding-heights [forest row col]
-  (let [top           (vertical-range forest col 0 (dec row))
-        down          (vertical-range forest col (inc row) (number-of-rows forest))
+  (let [up            (vertical-range forest col 0 (dec row))
         left          (horizontal-range forest row 0 col)
+        down          (vertical-range forest col (inc row) (number-of-rows forest))
         right         (horizontal-range forest row (inc col) (number-of-columns forest))]
-    [top down left right]))
+    [up left down right]))
 
 (defn- visible? [tree-height other-trees-height]
   (not (some #(>= % tree-height) other-trees-height)))
@@ -47,21 +47,50 @@
         surrounding-heights (surrounding-heights forest row col)]
     (boolean (some (partial visible? tree-height) surrounding-heights))))
 
-(defn- all-visible-tree-in-row [forest row total-visible]
-  (let [number-of-columns (number-of-columns forest)]
-    (loop [col 0
-           total-visible total-visible]
-      (if (>= col number-of-columns)
-        total-visible
-        (let [total-visible (if (visible-from-all-sides? forest row col)
-                              (inc total-visible)
-                              total-visible)]
-          (recur (inc col) total-visible))))))
-
 (defn all-visible-trees [forest]
-  (let [number-of-rows (number-of-rows forest)]
+  (let [number-of-rows    (number-of-rows forest)
+        number-of-columns (number-of-columns forest)]
     (loop [row 0
            total-visible 0]
       (if (> row number-of-rows)
         total-visible
-        (recur (inc row) (all-visible-tree-in-row forest row total-visible))))))
+        (recur (inc row) (loop [col 0
+                                total-visible total-visible]
+                           (if (>= col number-of-columns)
+                             total-visible
+                             (let [total-visible (if (visible-from-all-sides? forest row col)
+                                                   (inc total-visible)
+                                                   total-visible)]
+                               (recur (inc col) total-visible)))))))))
+
+(defn- surrounding-heights-center-to-edges
+  "Put the surrounding height sequence in order from the center point to the edges"
+  [[up left down right]]
+  [(reverse up) (reverse left) down right])
+
+(defn- viewing-distance [tree-height surrounding-height]
+  (let [total-trees-until-edge            (count surrounding-height)
+        total-tree-until-blocked          (count (take-while #(< % tree-height) surrounding-height))
+        total-tree-until-blocked+blocked  (+ total-tree-until-blocked 1)]
+    (min total-trees-until-edge total-tree-until-blocked+blocked)))
+
+(defn- scenic-score [forest row col]
+  (let [tree-height         (get-tree-height forest row col)
+        surrounding-heights (-> (surrounding-heights forest row col)
+                                 surrounding-heights-center-to-edges)
+        viewing-distances   (map (partial viewing-distance tree-height) surrounding-heights)]
+    (reduce * viewing-distances)))
+
+(defn best-scenic-score [forest]
+  (let [number-of-rows    (number-of-rows forest)
+        number-of-columns (number-of-columns forest)]
+    (loop [row 0
+           score 0]
+      (if (> row number-of-rows)
+        score
+        (recur (inc row) (loop [col 0
+                                score score]
+                           (if (>= col number-of-columns)
+                             score
+                             (let [score (max (scenic-score forest row col) score)]
+                               (recur (inc col) score)))))))))
