@@ -9,4 +9,9 @@
     (let [input (slurp (io/resource "input-day09.txt"))]
       (is (= (-> input
                  adapter/text->rope
-                 ((partial logic/tail-move-count [{:x 0 :y 0} {:x 0 :y 0}]))) 5907)))))
+                 ((partial logic/tail-move-count (take 2 (repeat {:x 0 :y 0}))))) 5907))))
+  (testing "Part 2 - How many positions does the tail of the 10 knots rope visit at least once?"
+    (let [input (slurp (io/resource "input-day09.txt"))]
+      (is (= (-> input
+                 adapter/text->rope
+                 ((partial logic/tail-move-count (take 10 (repeat {:x 0 :y 0}))))) 2303)))))

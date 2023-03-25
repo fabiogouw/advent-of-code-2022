@@ -14,23 +14,47 @@
 
 (deftest move
   (testing "starting move (head and tail in the same position)"
-    (are [rope direction result] (= (logic/move rope direction) result)
+    (are [rope direction result] (= (logic/move-rope rope direction) result)
                                  [{:x 0 :y 0} {:x 0 :y 0}] "L" [{:x -1 :y 0} {:x 0 :y 0}]
                                  [{:x 0 :y 0} {:x 0 :y 0}] "R" [{:x 1 :y 0} {:x 0 :y 0}]
                                  [{:x 0 :y 0} {:x 0 :y 0}] "U" [{:x 0 :y 1} {:x 0 :y 0}]
                                  [{:x 0 :y 0} {:x 0 :y 0}] "D" [{:x 0 :y -1} {:x 0 :y 0}]))
   (testing "horizontal moves"
-    (are [rope direction result] (= (logic/move rope direction) result)
+    (are [rope direction result] (= (logic/move-rope rope direction) result)
                                  [{:x 1 :y 0} {:x 0 :y 0}] "R" [{:x 2 :y 0} {:x 1 :y 0}]
                                  [{:x -1 :y 0} {:x 0 :y 0}] "L" [{:x -2 :y 0} {:x -1 :y 0}]))
   (testing "vertical moves"
-    (are [rope direction result] (= (logic/move rope direction) result)
+    (are [rope direction result] (= (logic/move-rope rope direction) result)
                                  [{:x 0 :y 1} {:x 0 :y 0}] "U" [{:x 0 :y 2} {:x 0 :y 1}]
                                  [{:x 0 :y -1} {:x 0 :y 0}] "D" [{:x 0 :y -2} {:x 0 :y -1}])))
 
+(deftest follow
+  (testing "knot must stay as it is close to the previous knot"
+    (are [follower-knot updated-previous-knot result] (= (logic/follow-knot follower-knot updated-previous-knot) result)
+                                                      {:x 0 :y 0} {:x 1 :y 1} {:x 0 :y 0}
+                                                      {:x 0 :y 0} {:x 1 :y 0} {:x 0 :y 0}
+                                                      {:x 0 :y 0} {:x 0 :y 0} {:x 0 :y 0}))
+  (testing "knot must follow its previous knot"
+    (are [follower-knot updated-previous-knot result] (= (logic/follow-knot follower-knot updated-previous-knot) result)
+                                                      {:x 0 :y 0} {:x 0 :y 2}   {:x 0 :y 1}
+                                                      {:x 0 :y 0} {:x 0 :y -2}  {:x 0 :y -1}
+                                                      {:x 0 :y 0} {:x 2 :y 0}   {:x 1 :y 0}
+                                                      {:x 0 :y 0} {:x -2 :y 0}  {:x -1 :y 0}))
+  (testing "knot must follow its previous knot diagonally"
+    (are [follower-knot updated-previous-knot result] (= (logic/follow-knot follower-knot updated-previous-knot) result)
+                                                      {:x 0 :y 0} {:x 2 :y 1}   {:x 1 :y 1}
+                                                      {:x 0 :y 0} {:x 1 :y 2}   {:x 1 :y 1}
+                                                      {:x 0 :y 0} {:x -2 :y 1}  {:x -1 :y 1}
+                                                      {:x 0 :y 0} {:x -1 :y 2}  {:x -1 :y 1}
+                                                      {:x 0 :y 0} {:x 2 :y -1}  {:x 1 :y -1}
+                                                      {:x 0 :y 0} {:x 1 :y -2}  {:x 1 :y -1}
+                                                      {:x 0 :y 0} {:x -2 :y -1} {:x -1 :y -1}
+                                                      {:x 0 :y 0} {:x -1 :y -2} {:x -1 :y -1})))
+
 (deftest tail-position-count
   (testing "count all tail distinct positions"
-    (let [moves (concat
+    (let [rope  (take 2 (repeat {:x 0 :y 0}))
+          moves (concat
                   (take 4 (repeat "R"))
                   (take 4 (repeat "U"))
                   (take 3 (repeat "L"))
@@ -39,4 +63,28 @@
                   (take 1 (repeat "D"))
                   (take 5 (repeat "L"))
                   (take 2 (repeat "R")))]
-      (is (= (logic/tail-move-count [{:x 0 :y 1} {:x 0 :y 0}] moves) 13)))))
+      (is (= (logic/tail-move-count rope moves) 13))))
+  (testing "count all tail distinct positions with a longer rope"
+    (let [rope  (take 10 (repeat {:x 0 :y 0}))
+          moves (concat
+                  (take 4 (repeat "R"))
+                  (take 4 (repeat "U"))
+                  (take 3 (repeat "L"))
+                  (take 1 (repeat "D"))
+                  (take 4 (repeat "R"))
+                  (take 1 (repeat "D"))
+                  (take 5 (repeat "L"))
+                  (take 2 (repeat "R")))]
+      (is (= (logic/tail-move-count rope moves) 1))))  
+  (testing "count all tail distinct positions with a longer rope with a larger example"
+    (let [rope  (take 10 (repeat {:x 0 :y 0}))
+          moves (concat
+                  (take 5 (repeat "R"))
+                  (take 8 (repeat "U"))
+                  (take 8 (repeat "L"))
+                  (take 3 (repeat "D"))
+                  (take 17 (repeat "R"))
+                  (take 10 (repeat "D"))
+                  (take 25 (repeat "L"))
+                  (take 20 (repeat "U")))]
+      (is (= (logic/tail-move-count rope moves) 36)))))
