@@ -4,7 +4,3 @@
 (s/defschema Position
   {:x s/Int
    :y s/Int})
-
-(s/defschema Rope
-  {:head Position
-   :tail Position})

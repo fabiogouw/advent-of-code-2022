@@ -15,18 +15,18 @@
 (deftest move
   (testing "starting move (head and tail in the same position)"
     (are [rope direction result] (= (logic/move rope direction) result)
-                                 {:head {:x 0 :y 0} :tail {:x 0 :y 0}} "L" {:head {:x -1 :y 0} :tail {:x 0 :y 0}}
-                                 {:head {:x 0 :y 0} :tail {:x 0 :y 0}} "R" {:head {:x 1 :y 0} :tail {:x 0 :y 0}}
-                                 {:head {:x 0 :y 0} :tail {:x 0 :y 0}} "U" {:head {:x 0 :y 1} :tail {:x 0 :y 0}}
-                                 {:head {:x 0 :y 0} :tail {:x 0 :y 0}} "D" {:head {:x 0 :y -1} :tail {:x 0 :y 0}}))
+                                 [{:x 0 :y 0} {:x 0 :y 0}] "L" [{:x -1 :y 0} {:x 0 :y 0}]
+                                 [{:x 0 :y 0} {:x 0 :y 0}] "R" [{:x 1 :y 0} {:x 0 :y 0}]
+                                 [{:x 0 :y 0} {:x 0 :y 0}] "U" [{:x 0 :y 1} {:x 0 :y 0}]
+                                 [{:x 0 :y 0} {:x 0 :y 0}] "D" [{:x 0 :y -1} {:x 0 :y 0}]))
   (testing "horizontal moves"
     (are [rope direction result] (= (logic/move rope direction) result)
-                                 {:head {:x 1 :y 0} :tail {:x 0 :y 0}} "R" {:head {:x 2 :y 0} :tail {:x 1 :y 0}}
-                                 {:head {:x -1 :y 0} :tail {:x 0 :y 0}} "L" {:head {:x -2 :y 0} :tail {:x -1 :y 0}}))
+                                 [{:x 1 :y 0} {:x 0 :y 0}] "R" [{:x 2 :y 0} {:x 1 :y 0}]
+                                 [{:x -1 :y 0} {:x 0 :y 0}] "L" [{:x -2 :y 0} {:x -1 :y 0}]))
   (testing "vertical moves"
     (are [rope direction result] (= (logic/move rope direction) result)
-                                 {:head {:x 0 :y 1} :tail {:x 0 :y 0}} "U" {:head {:x 0 :y 2} :tail {:x 0 :y 1}}
-                                 {:head {:x 0 :y -1} :tail {:x 0 :y 0}} "D" {:head {:x 0 :y -2} :tail {:x 0 :y -1}})))
+                                 [{:x 0 :y 1} {:x 0 :y 0}] "U" [{:x 0 :y 2} {:x 0 :y 1}]
+                                 [{:x 0 :y -1} {:x 0 :y 0}] "D" [{:x 0 :y -2} {:x 0 :y -1}])))
 
 (deftest tail-position-count
   (testing "count all tail distinct positions"
@@ -39,4 +39,4 @@
                   (take 1 (repeat "D"))
                   (take 5 (repeat "L"))
                   (take 2 (repeat "R")))]
-      (is (= (logic/tail-move-count {:head {:x 0 :y 1} :tail {:x 0 :y 0}} moves) 13)))))
+      (is (= (logic/tail-move-count [{:x 0 :y 1} {:x 0 :y 0}] moves) 13)))))

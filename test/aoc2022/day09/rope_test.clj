@@ -9,4 +9,4 @@
     (let [input (slurp (io/resource "input-day09.txt"))]
       (is (= (-> input
                  adapter/text->rope
-                 ((partial logic/tail-move-count {:head {:x 0 :y 0} :tail {:x 0 :y 0}}))) 5907)))))
+                 ((partial logic/tail-move-count [{:x 0 :y 0} {:x 0 :y 0}]))) 5907)))))
