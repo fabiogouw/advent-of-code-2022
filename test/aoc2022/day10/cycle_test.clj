@@ -16,4 +16,18 @@
       (is (= (-> input
                  adapter/text->signal-stream
                  ((partial logic/signal-strength 1))
-                 logic/signal-strength-summed) 14540))))  )
+                 logic/signal-strength-summed) 14540))))
+  (testing "Part 2 - What eight capital letters appear on your CRT? (example)"
+    (let [input (slurp (io/resource "input-day10-sample.txt"))
+          crt   (slurp (io/resource "input-day10-crt-sample.txt"))]
+      (is (= (-> input
+                 adapter/text->signal-stream
+                 ((partial logic/signal-strength 1))
+                 adapter/position->text) crt))))
+  (testing "Part 2 - What eight capital letters appear on your CRT? (example)"
+    (let [input (slurp (io/resource "input-day10.txt"))
+          crt   (slurp (io/resource "input-day10-crt-answer.txt"))]
+      (is (= (-> input
+                 adapter/text->signal-stream
+                 ((partial logic/signal-strength 1))
+                 adapter/position->text) crt)))))
